@@ -40,4 +40,22 @@ public class FileUtil {
 
 	}
 
+	public static String readPropertyFile(String fileName, String key) {
+
+		Properties properties = new Properties();
+		String value = null;
+
+		try {
+
+			properties.load(readFileFromResources(fileName + ".properties"));
+			value = properties.getProperty(key);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return value;
+
+	}
+
 }

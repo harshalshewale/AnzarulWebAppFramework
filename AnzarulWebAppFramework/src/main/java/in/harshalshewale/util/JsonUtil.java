@@ -1,7 +1,11 @@
 package in.harshalshewale.util;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -44,6 +48,19 @@ public class JsonUtil {
 		Object jsonObject = jsonParser.parse(jsonInString);
 		return JsonPath.read(jsonObject, jsonPath).toString();
 
+	}
+
+	public static String readJsonFromURL(URL url) throws IOException {
+		try (InputStream input = url.openStream()) {
+			InputStreamReader isr = new InputStreamReader(input);
+			BufferedReader reader = new BufferedReader(isr);
+			StringBuilder json = new StringBuilder();
+			int c;
+			while ((c = reader.read()) != -1) {
+				json.append((char) c);
+			}
+			return json.toString();
+		}
 	}
 
 }
