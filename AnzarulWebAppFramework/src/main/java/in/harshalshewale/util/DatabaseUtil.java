@@ -43,8 +43,8 @@ public class DatabaseUtil {
 
 	}
 
-	public static void insertTestResult(String testSuiteName, int testId, String testCaseName, String result,
-			String comment) throws IOException {
+	public static void insertTestResult(String testExecutionId, String testSuiteName, int testId, String testCaseName,
+			String result, String comment) throws IOException {
 
 		String environment = FileUtil.readPropertyFile("test", "environment");
 		String browser = FileUtil.readPropertyFile("test", "browser");
@@ -53,18 +53,19 @@ public class DatabaseUtil {
 		PreparedStatement preparedStmt = null;
 
 		try {
-			LOGGER.info("Writting API Requests Responses to Database");
-			String query = "insert into webapp (environment,browser,testid,testsuite,testcase,result,comment)"
-					+ " values (?, ?, ?, ?, ?, ?, ?)";
+			LOGGER.info("Writting result to Database");
+			String query = "insert into webapp (testexecutionid,environment,browser,testid,testsuite,testcase,result,comment)"
+					+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
 			connection = getConnection();
 			preparedStmt = connection.prepareStatement(query);
-			preparedStmt.setString(1, environment);
-			preparedStmt.setString(2, browser);
-			preparedStmt.setInt(3, testId);
-			preparedStmt.setString(4, testSuiteName);
-			preparedStmt.setString(5, testCaseName);
-			preparedStmt.setString(6, result);
-			preparedStmt.setString(7, comment);
+			preparedStmt.setString(1, testExecutionId);
+			preparedStmt.setString(2, environment);
+			preparedStmt.setString(3, browser);
+			preparedStmt.setInt(4, testId);
+			preparedStmt.setString(5, testSuiteName);
+			preparedStmt.setString(6, testCaseName);
+			preparedStmt.setString(7, result);
+			preparedStmt.setString(8, comment);
 			preparedStmt.execute();
 		} catch (ClassNotFoundException | SQLException exception) {
 			LOGGER.error("Error occured while writing data to Database " + exception.getMessage());
